@@ -1,0 +1,93 @@
+{
+  "patterns": {
+    "primary": [
+      "hey raven",
+      "hello raven",
+      "hi raven"
+    ],
+    "secondary": [
+      "okay raven",
+      "excuse me raven",
+      "raven",
+      "hey haven",
+      "hello haven"
+    ],
+    "conversational": [
+      "raven can you",
+      "raven could you", 
+      "raven will you",
+      "raven would you",
+      "raven please",
+      "raven help me",
+      "raven tell me"
+    ],
+    "question_patterns": [
+      "raven what",
+      "raven where", 
+      "raven when",
+      "raven who",
+      "raven why",
+      "raven how"
+    ],
+    "punctuation_based": [
+      "raven,",
+      "raven?"
+    ],
+    "multilingual": {
+      "spanish": [
+        "oye raven",
+        "hola raven",
+        "hey raven"
+      ],
+      "french": [
+        "salut raven",
+        "hey raven",
+        "bonjour raven"
+      ],
+      "german": [
+        "hey raven",
+        "hallo raven"
+      ]
+    }
+  },
+  "sensitivity": {
+    "primary_threshold": 0.9,
+    "secondary_threshold": 0.7,
+    "fuzzy_match_enabled": true,
+    "fuzzy_distance_threshold": 2,
+    "min_question_length": 3,
+    "max_question_length": 200,
+    "confidence_scoring_enabled": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "cooldown_seconds": 3,
+    "max_detections_per_minute": 15,
+    "per_speaker_limiting": true,
+    "debounce_same_segment": true
+  },
+  "extraction": {
+    "cleanup_patterns": [
+      "^[,\\s]+",
+      "\\s+",
+      "[.!]+$"
+    ],
+    "default_fallback_question": "How can I help you?",
+    "context_aware_extraction": true,
+    "preserve_original_casing": false
+  },
+  "multilingual": {
+    "enabled": false,
+    "default_language": "en",
+    "auto_detect_language": false,
+    "supported_languages": ["en", "es", "fr", "de"]
+  },
+  "debugging": {
+    "log_all_matches": false,
+    "log_failed_extractions": true,
+    "log_rate_limited": true,
+    "performance_metrics": true
+  }
+}
+
+

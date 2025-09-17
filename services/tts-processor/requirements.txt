@@ -1,0 +1,39 @@
+# TTS-Processor Service Dependencies
+# Optimized for speed and reliability - minimal dependencies
+
+# Core TTS Dependencies (lightweight, fast)
+gtts>=2.3.0              # Google Text-to-Speech (primary engine)
+pyttsx3>=2.90            # Offline TTS engine (fallback)
+
+# FastAPI and Web Framework
+fastapi>=0.104.1         # FastAPI framework
+uvicorn[standard]>=0.24.0  # ASGI server with standard extras
+
+# Redis Integration
+redis[hiredis]>=5.0.0    # Redis client with C extension for speed
+
+# HTTP Client
+aiohttp>=3.9.0           # Async HTTP client
+
+# Data Validation and Parsing
+pydantic>=2.4.0          # Data validation
+
+# Audio Processing (minimal)
+# Note: We skip heavy audio libraries for speed
+# Audio processing is done in-memory with built-in libraries
+
+# Development and Debugging
+python-multipart>=0.0.6  # For form data support
+
+# Optional: Audio format conversion (only if needed)
+# pydub>=0.25.1          # Uncomment if MP3->WAV conversion needed
+# Requires: apt-get install ffmpeg (in Dockerfile)
+
+# Performance Notes:
+# - No transformers, torch, or scipy (saves ~2GB+ and startup time)
+# - No Bark model dependencies (saves ~5GB download)
+# - Minimal audio processing libraries
+# - Focus on gTTS + pyttsx3 for speed and reliability
+# - Redis hiredis for faster Redis operations
+
+

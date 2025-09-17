@@ -1,0 +1,334 @@
+# **"Hey, Raven" Voice Assistant - Step-by-Step Implementation Guide**
+
+## **Phase 1: LLM-Processor Service Setup**
+
+### **Step 1.1: Create Service Directory Structure**
+
+- Create new directory raven_api/services/llm-processor/
+- Set up the following file structure:
+- Dockerfile - Multi-stage build with Ollama + Python
+- requirements.txt - Python dependencies (FastAPI, Redis, aiohttp)
+- main.py - FastAPI application with health checks
+- llm_client.py - Ollama API client wrapper
+- redis_consumer.py - Redis stream consumer for voice commands
+- config.py - Environment configuration management
+- README.md - Service documentation
+
+### **Step 1.2: Dockerfile Implementation**
+
+- Use multi-stage build: Ollama base image + Python runtime
+- Install system dependencies (curl, wget)
+- Copy Ollama binary from official image
+- Code for ollama installation: curl -fsSL https://ollama.com/install.sh | sh
+- Set up proper user permissions for Ollama
+- Configure health checks for both Ollama and FastAPI
+- Set up volume mounts for model persistence
+- Use a ollama run mistral:7b Ollama model for text-generation.
+- Configure GPU support for CUDA acceleration
+
+### **Step 1.3: FastAPI Service Implementation**
+
+- Create main application with lifespan management
+- Implement startup sequence: Ollama initialization → Model pulling → Redis connection
+- Add health check endpoints for service monitoring
+- Create direct API endpoints for testing (/generate, /models)
+- Implement proper error handling and logging
+- Add CORS middleware for cross-service communication
+
+### **Step 1.4: Ollama Client Wrapper**
+
+- Create async HTTP client for Ollama API communication
+- Implement model management (pull, list, verify availability)
+- Add response generation with proper prompt engineering
+- Include system prompts for "Raven" personality
+- Implement timeout handling and retry logic
+- Add response length limiting and formatting
+
+### **Step 1.5: Redis Stream Consumer**
+
+- Create Redis consumer for hey_raven_commands stream
+- Implement consumer group management
+- Add message processing pipeline
+- Create output stream for llm_responses
+- Implement proper message acknowledgment
+- Add error handling and message retry logic
+
+## **Phase 2: Docker Compose Integration**
+
+### **Step 2.1: Service Configuration**
+
+- Add llm-processor service to docker-compose.yml
+- Configure GPU device allocation for Ollama
+- Set up proper environment variables
+- Add volume mounts for model persistence
+- Configure health checks and restart policies
+- Set up service dependencies (Redis, networking)
+
+### **Step 2.2: Environment Configuration**
+
+- Update env-example.gpu with LLM-Processor settings
+- Add port configuration for service exposure
+- Set model name and response parameters
+- Configure logging levels and timeouts
+- Add GPU device selection options
+
+### **Step 2.3: Makefile Updates**
+
+- Add LLM-Processor to build targets
+- Update environment file generation
+- Add GPU profile support for LLM service
+- Include health check commands
+- Add service-specific management commands
+
+## **Phase 3: Wake Word Detection Enhancement**
+
+### **Step 3.1: Transcription Collector Modifications**
+
+- Add wake word detection function to processors.py
+- Implement regex patterns for "Hey Raven" variations
+- Create question extraction logic
+- Add Redis stream publishing for detected commands
+- Implement proper error handling and logging
+
+### **Step 3.2: Wake Word Patterns**
+
+- Define multiple wake word patterns (hey raven, hello raven, raven + question)
+- Implement case-insensitive matching
+- Add support for different languages
+- Create fallback patterns for edge cases
+- Test pattern accuracy and false positive rates
+
+### **Step 3.3: Stream Integration**
+
+- Create new Redis stream hey_raven_commands
+- Implement message format standardization
+- Add metadata tracking (session_uid, meeting_id, timestamp)
+- Create consumer group for LLM-Processor
+- Add stream monitoring and debugging tools
+
+## **Phase 4: TTS Integration Enhancement**
+
+### **Step 4.1: TTS Service Redis Consumer**
+
+- Modify existing TTS engine to consume llm_responses stream
+- Add Redis client to TTS service
+- Implement stream consumer for text-to-speech conversion
+- Create audio output stream tts_audio_queue
+- Add proper message acknowledgment
+
+### **Step 4.2: Audio Format Standardization**
+
+- Define standard audio format (MP3/WAV)
+- Implement format conversion if needed
+- Add audio quality settings
+- Create file size optimization
+- Add audio metadata (duration, format, etc.)
+
+### **Step 4.3: Stream Processing Pipeline**
+
+- Create TTS processing workflow
+- Add audio generation queue management
+- Implement error handling for TTS failures
+- Add fallback mechanisms for audio generation
+- Create audio file cleanup processes
+
+## **Phase 5: Vexa-Bot Audio Playback Enhancement**
+
+### **Step 5.1: Redis Consumer for Audio**
+
+- Add Redis consumer to vexa-bot for tts_audio_queue
+- Implement audio stream processing
+- Add Web Audio API integration for playback
+- Create audio buffer management
+- Implement proper audio cleanup
+
+### **Step 5.2: Microphone Control**
+
+- Add microphone enable/disable functionality
+- Implement timed microphone activation
+- Create audio playback coordination
+- Add speaker detection during playback
+- Implement proper audio session management
+
+### **Step 5.3: Browser Audio Integration**
+
+- Extend existing browser context with audio capabilities
+- Add audio file download and playback
+- Implement audio format compatibility
+- Create audio playback status tracking
+- Add audio error handling and recovery
+
+## **Phase 6: End-to-End Integration**
+
+### **Step 6.1: Service Communication Testing**
+
+- Test Redis stream communication between services
+- Verify message format consistency
+- Test error propagation and handling
+- Validate service health checks
+- Test service restart and recovery
+
+### **Step 6.2: Complete Workflow Testing**
+
+- Test full "Hey Raven" workflow end-to-end
+- Verify wake word detection accuracy
+- Test LLM response generation quality
+- Validate TTS audio output quality
+- Test audio playback in browser context
+
+### **Step 6.3: Performance Optimization**
+
+- Optimize response times for each service
+- Implement caching for common responses
+- Add connection pooling for Redis
+- Optimize audio processing pipeline
+- Add monitoring and metrics collection
+
+## **Phase 7: Configuration and Deployment**
+
+### **Step 7.1: Environment Configuration**
+
+- Create comprehensive environment templates
+- Add configuration validation
+- Implement configuration hot-reloading
+- Add configuration documentation
+- Create configuration backup/restore
+
+### **Step 7.2: Monitoring and Logging**
+
+- Add structured logging across all services
+- Implement log aggregation
+- Add performance metrics collection
+- Create alerting for service failures
+- Add debugging tools and dashboards
+
+### **Step 7.3: Documentation and Testing**
+
+- Create comprehensive API documentation
+- Add integration test suites
+- Create deployment guides
+- Add troubleshooting documentation
+- Create user guides for the voice assistant
+
+## **Phase 8: Advanced Features**
+
+### **Step 8.1: Context Awareness**
+
+- Add meeting context to LLM prompts
+- Implement conversation history tracking
+- Add user preference learning
+- Create personalized responses
+- Add meeting-specific knowledge
+
+### **Step 8.2: Multi-language Support**
+
+- Add language detection for questions
+- Implement multi-language LLM responses
+- Add language-specific TTS voices
+- Create language switching capabilities
+- Add internationalization support
+
+### **Step 8.3: Advanced Audio Features**
+
+- Add voice activity detection
+- Implement noise cancellation
+- Add audio quality enhancement
+- Create audio streaming optimization
+- Add real-time audio processing
+
+## **Implementation Order Priority**
+
+### **High Priority (Core Functionality)**
+
+1. LLM-Processor service setup (Steps 1.1-1.5)
+2. Docker Compose integration (Steps 2.1-2.3)
+3. Wake word detection (Steps 3.1-3.3)
+4. Basic TTS integration (Steps 4.1-4.2)
+5. Basic audio playback (Steps 5.1-5.2)
+
+### **Medium Priority (Enhanced Features)**
+
+1. Complete workflow testing (Steps 6.1-6.3)
+2. Audio format optimization (Step 4.3)
+3. Browser audio integration (Step 5.3)
+4. Performance optimization (Steps 6.3)
+5. Monitoring setup (Steps 7.2)
+
+### **Low Priority (Advanced Features)**
+
+1. Context awareness (Steps 8.1)
+2. Multi-language support (Steps 8.2)
+3. Advanced audio features (Steps 8.3)
+4. Documentation completion (Steps 7.1, 7.3)
+
+## **Success Criteria**
+
+### **Phase 1 Success**
+
+- LLM-Processor service runs successfully
+- Ollama with Mistral 7B is functional
+- Redis streams are working
+- Health checks pass
+
+### **Phase 2 Success**
+
+- Service integrates with existing Docker Compose
+- GPU acceleration is working
+- Environment configuration is complete
+- Makefile commands work properly
+
+### **Phase 3 Success**
+
+- Wake word detection is accurate (>90% accuracy)
+- False positive rate is low (<5%)
+- Questions are properly extracted
+- Redis streams are publishing correctly
+
+### **Phase 4 Success**
+
+- TTS consumes LLM responses
+- Audio generation is working
+- Audio quality is acceptable
+- Stream processing is reliable
+
+### **Phase 5 Success**
+
+- Vexa-bot plays audio successfully
+- Microphone control works
+- Audio playback is synchronized
+- Browser integration is stable
+
+### **End-to-End Success**
+
+- Complete "Hey Raven" workflow functions
+- Response time is under 5 seconds
+- Audio quality is clear and understandable
+- System is stable under load
+- Error handling works properly
+
+12 of 12 Done
+
+~~Analyze current system architecture and componentsReview TTS system capabilities and implementationDesign 'Hey, Raven' voice assistant workflowCreate detailed implementation plan with components and flowIdentify integration points between servicesDefine new Redis streams for TTS audio and voice commandsDesign LLM-Processor microservice with Ollama and Mistral 7BCreate Dockerfile for Ollama service with Mistral 7BImplement FastAPI service for LLM processingUpdate Makefile to include LLM-Processor serviceIntegrate Redis streams for voice commands and responsesCreate detailed step-by-step implementation guide~~
+
+- ~~Analyze current system architecture and components~~
+- ~~Review TTS system capabilities and implementation~~
+- ~~Design 'Hey, Raven' voice assistant workflow~~
+- ~~Create detailed implementation plan with components and flow~~
+- ~~Identify integration points between services~~
+- ~~Define new Redis streams for TTS audio and voice commands~~
+- ~~Design LLM-Processor microservice with Ollama and Mistral 7B~~
+- ~~Create Dockerfile for Ollama service with Mistral 7B~~
+- ~~Implement FastAPI service for LLM processing~~
+- ~~Update Makefile to include LLM-Processor service~~
+- ~~Integrate Redis streams for voice commands and responses~~
+- ~~Create detailed step-by-step implementation guide~~
+
+This implementation plan provides a comprehensive roadmap for building the "Hey, Raven" voice assistant feature. The steps are organized in phases to ensure a logical progression from basic functionality to advanced features.
+
+**Key Benefits of This Approach:**
+
+- **Modular Development**: Each phase can be implemented and tested independently
+- **Incremental Testing**: Each step builds upon the previous ones with validation points
+- **Risk Mitigation**: Early phases establish core functionality before adding complexity
+- **Scalable Architecture**: The design supports future enhancements and scaling
+- **Integration-Friendly**: Works seamlessly with your existing infrastructure
