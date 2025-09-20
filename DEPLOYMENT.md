@@ -1,12 +1,6 @@
-# Quick start: Local Deployment and Testing
-
-Instructions for setting up, running, and testing the Vexa system locally using Docker Compose and Make.
-
-[3 min video tutorial](https://www.youtube.com/watch?v=bHMIByieVek)
-
 ## Prerequisites (Ubuntu/Debian)
 
-Before running Vexa, ensure you have the following installed on your Ubuntu system:
+Before running RavenAI, ensure you have the following installed on your Ubuntu system:
 
 ### Required Dependencies
 ```bash
@@ -60,8 +54,8 @@ docker compose version
 1.  **For CPU (Tiny Model, Slower Performance - Good for local tests/development):**
    this will use 'whisper tiny' model, which can run on CPU.
     ```bash
-    git clone https://github.com/Vexa-ai/vexa
-    cd vexa
+    git clone https://github.com/Arnur12345/meeplex---DaDa-shaipro
+    cd meeplex---DaDa-shaipro
     make all
     ```
     This command (among other things) uses `env-example.cpu` defaults for `.env` if not present.
@@ -71,8 +65,8 @@ docker compose version
 2.  **For GPU (Medium Model, Faster Performance - Requires NVIDIA GPU & Toolkit):**
     this will use 'whisper medium' model, which is good enough to run on GPU.
     ```bash
-    git clone https://github.com/Vexa-ai/vexa
-    cd vexa
+    git clone https://github.com/Arnur12345/meeplex---DaDa-shaipro
+    cd meeplex---DaDa-shaipro
     make all TARGET=gpu
     ```
     This uses `env-example.gpu` defaults for `.env` if not present.
