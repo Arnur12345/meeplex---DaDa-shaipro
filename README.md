@@ -8,8 +8,6 @@ RavenAI is an API for **real-time meeting transcription** leveraging **meeting b
 
 This project serves as a **privacy-first, open-source** alternative, focusing on delivering **clean, private, real-time transcription under your control**, allowing you to safely build on top of its capabilities.
 
-## News (31 August 2025)
-
   * **MCP server for agents (new microservice):** Full RavenAI API access from any MCP-capable agent (Claude Desktop, Cursor, etc.). See `services/mcp`. Built with [https://github.com/tadata-org/fastpi\_mcp](https://github.com/tadata-org/fastpi_mcp)
   * **Hallucination filtering:** Greatly reduced hallucinations in selected languages. Contributions welcome — add phrases to `services/WhisperLive/hallucinations/` for your language.
   * **Google Meet UI updates:** Bot adjusted to the latest Google Meet UI changes for reliable joining and capture.
